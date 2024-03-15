@@ -19,6 +19,4 @@ describe('LeaveFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('');
 });

@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   WritableSignal,
   inject,
@@ -16,8 +15,8 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';

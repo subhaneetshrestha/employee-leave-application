@@ -4,6 +4,7 @@ import {
   catchError,
   map,
   mergeMap,
+  repeat,
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -59,7 +60,8 @@ export class LeaveEffects {
           .pipe(switchMap(() => this.leaveService.create(leave)));
       }),
       map((leave: Leave) => createLeaveSuccess({ leave })),
-      catchError((error) => of(createLeaveFailure({ error })))
+      catchError((error) => of(createLeaveFailure({ error }))),
+      repeat()
     )
   );
 
@@ -72,7 +74,8 @@ export class LeaveEffects {
           .pipe(switchMap(() => this.leaveService.create(leave)));
       }),
       map((leave: Leave) => updateLeaveSuccess({ leave })),
-      catchError((error) => of(updateLeaveFailure({ error })))
+      catchError((error) => of(updateLeaveFailure({ error }))),
+      repeat()
     )
   );
 
@@ -81,7 +84,8 @@ export class LeaveEffects {
       ofType(deleteLeave),
       switchMap(({ leave }) => this.leaveService.delete(leave)),
       map((leave: Leave) => deleteLeaveSuccess({ leave })),
-      catchError((error) => of(deleteLeaveFailure({ error })))
+      catchError((error) => of(deleteLeaveFailure({ error }))),
+      repeat()
     )
   );
 
