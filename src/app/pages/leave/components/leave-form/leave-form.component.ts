@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   WritableSignal,
   inject,
@@ -16,7 +17,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { take } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -35,12 +36,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 
 import {
   selectLeaveById,
-  selectLeaveError,
   selectUserLeave,
 } from '../../../../core/selectors/leave.selectors';
 import { Leave } from '../../types/leave.types';
 import { createLeave, updateLeave } from '../../../../core/store/leave.actions';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-leave-form',
@@ -68,12 +67,8 @@ export class LeaveFormComponent implements OnInit {
   private ref = inject(ChangeDetectorRef);
   private data = inject(MAT_DIALOG_DATA);
   private dialogRef = inject(MatDialogRef<any>);
-  private snackBar = inject(MatSnackBar);
 
-  formType: WritableSignal<string> = signal('add');
   title: WritableSignal<string> = signal('Create a new leave');
-  user$ = this.store.pipe(select(selectUserLeave));
-  createError$ = this.store.select(selectLeaveError);
   leaveForm = new FormGroup({
     id: new FormControl(''),
     date: new FormControl(new Date(), [
@@ -104,6 +99,7 @@ export class LeaveFormComponent implements OnInit {
         .pipe(take(1))
         .subscribe((data) => {
           if (data) {
+            this.title.set('Update leave');
             this.leaveForm.patchValue(data);
             this.ref.markForCheck();
           }
@@ -116,17 +112,9 @@ export class LeaveFormComponent implements OnInit {
           this.leaveForm.get('firstName')?.setValue(data.firstName);
           this.leaveForm.get('lastName')?.setValue(data.lastName);
           this.leaveForm.get('employeeId')?.setValue(data.employeeId);
+          this.ref.markForCheck();
         });
     }
-
-    this.createError$.subscribe((error) => {
-      if (error) {
-        this.snackBar.open(error, 'dismiss', {
-          duration: 3000,
-          horizontalPosition: 'right',
-        });
-      }
-    });
   }
 
   /**

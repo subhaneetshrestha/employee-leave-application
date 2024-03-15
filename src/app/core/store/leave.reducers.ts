@@ -35,6 +35,7 @@ const reducer = createReducer<LeaveState>(
     return {
       ...state,
       isLoading: true,
+      error: '',
     };
   }),
   on(getUserLeaveSuccess, (state, { userLeave }) => {
@@ -42,6 +43,7 @@ const reducer = createReducer<LeaveState>(
       ...state,
       userLeave,
       isLoading: false,
+      error: '',
     };
   }),
   on(getUserLeaveFailure, (state, { error }) => {
@@ -55,6 +57,7 @@ const reducer = createReducer<LeaveState>(
     return {
       ...state,
       isLoading: true,
+      error: '',
     };
   }),
   on(getLeavesSuccess, (state, { leaves }) => {
@@ -62,6 +65,7 @@ const reducer = createReducer<LeaveState>(
       ...state,
       isLoading: false,
       leaves,
+      error: '',
     };
   }),
   on(createLeave, (state) => {
@@ -81,6 +85,7 @@ const reducer = createReducer<LeaveState>(
             : state.userLeave.remainingLeave - 0.5,
       }),
       isLoading: false,
+      error: '',
     };
   }),
   on(createLeaveFailure, (state, { error }) => {
@@ -109,6 +114,7 @@ const reducer = createReducer<LeaveState>(
             : state.userLeave.remainingLeave,
       }),
       isLoading: false,
+      error: '',
     };
   }),
   on(updateLeaveFailure, (state, { error }) => {
@@ -135,6 +141,7 @@ const reducer = createReducer<LeaveState>(
             ? state.userLeave.remainingLeave + 1
             : state.userLeave.remainingLeave + 0.5,
       }),
+      error: '',
     };
   }),
   on(deleteLeaveFailure, (state, { error }) => {
