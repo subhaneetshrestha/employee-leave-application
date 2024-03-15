@@ -1,0 +1,67 @@
+<div class="flex justify-between items-center p-2">
+  <h4 class="text-center">Leave view</h4>
+  <button mat-stroked-button color="primary" (click)="openLeaveForm()">
+    Add
+  </button>
+</div>
+
+<div>
+  <table mat-table [dataSource]="(leaveSource$ | async) || []">
+    <ng-container matColumnDef="employeeId">
+      <th mat-header-cell *matHeaderCellDef>Employee Id</th>
+      <td mat-cell *matCellDef="let element">{{ element.employeeId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.date | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="reason">
+      <th mat-header-cell *matHeaderCellDef>Reason</th>
+      <td mat-cell *matCellDef="let element">{{ element.reason }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          disableField
+          [comparisonData]="element"
+          [user]="user$ | async"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openLeaveForm(element)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="deleteLeave(formTemplate, element)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+  </table>
+</div>
+
+<ng-template #formTemplate>
+  <div>This is our custom modal content</div>
+</ng-template>

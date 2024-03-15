@@ -1,0 +1,13 @@
+@if (control) {
+<mat-form-field class="example-full-width">
+  <mat-label>Email</mat-label>
+  <input
+    type="email"
+    matInput
+    [formControl]="control"
+    placeholder="Ex. pat@example.com"
+  />
+  <c-error-input [formContained]="control" [controlName]="name"></c-error-input>
+</mat-form-field>
+
+}

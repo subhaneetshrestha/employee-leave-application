@@ -1,0 +1,53 @@
+<h2 class="p-2 text-white text-center">Leave {{ formType() }}</h2>
+
+<div>
+  <form class="px-12 py-4" [formGroup]="leaveForm" (submit)="submit()">
+    <div class="flex gap-6">
+      <mat-form-field>
+        <mat-label>Favorite Car</mat-label>
+        <select matNativeControl formControlName="type" name="type">
+          <option value="">None</option>
+          @for (type of types; track type) {
+          <option [value]="type.value">{{ type.name }}</option>
+          }
+        </select>
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="date"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        @if (leaveForm.get('date')?.hasError('required')) {
+
+        <mat-error> Date is required </mat-error>} @if
+        (leaveForm.get('date')?.errors?.['dateBeforeToday']) {
+        <mat-error> Cannot select date prior to today </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="w-full">
+      <mat-label>Reason</mat-label>
+      <textarea matInput formControlName="reason" required></textarea>
+      @if (leaveForm.get('reason')?.hasError('required')) {
+
+      <mat-error> Reason is required </mat-error>}
+    </mat-form-field>
+
+    <div class="flex justify-end pt-4">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="leaveForm.invalid"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
